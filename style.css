@@ -1,0 +1,48 @@
+* {
+	text-align: center;
+	background: black;
+	color: white;
+	font-family: sans-serif;
+}
+
+.vol-dis {
+	font-size: 150%;
+}
+
+.btn{
+	border: 1px solid #222222;
+	height: 30px;
+	min-width:100px;
+	max-width:250px;
+	margin: 5px;
+	transition: 0.5s;
+}
+.btn:hover{
+	background: #222;
+}
+.btn:disabled{
+	color: #888888;
+}
+.btn:active{
+	background: #444444;
+
+}
+.progress-parent{
+	width: 300px;
+	height: 25px;
+	border: 1px solid #ffffff;
+	border-radius: 2px;
+	margin: auto;
+	overflow: hidden;
+}
+.progress-child{
+	height:25px;
+	
+	width: 63.65%;
+	background: #888888;
+}
+.grid{
+	width:50px;
+	height:50px;
+	border: 1px solid #808080;
+}

@@ -1,0 +1,121 @@
+<!--
+<?php 
+$ip = $_SERVER["REMOTE_ADDR"];
+
+if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
+--><!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Multi Dimensional Volume Incremental Rewritten 4</title>
+		<script src="./js/vue.js" defer></script>
+		<script src="./js/PowiainaNum.js" defer></script>
+		<script src="./js/format-powiainanum.js" defer></script>
+		<script src="./js/formatsave.js" defer></script>
+		<script src="./js/upgrades.js" defer></script>
+		<script src="./js/offline.js" defer></script>
+		<script src="./js/tabshow.js" defer></script>
+		
+		<script src="./js/script.js" defer></script>
+		<script src="./js/formatTime.js" defer></script>
+		<link rel="stylesheet" href="style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	</head>
+	<body>
+		<div id="app">
+			<div class="header">
+				<p>你有 <span class="vol-dis">{{ format(player.volumes) }}</span> mm<sup>4</sup> 4维体积</p>
+          			  <div class="text-center">
+                			<button v-for="tab in primaryTabSort()" :class="getTabClass(tab.name)" :style="tab.style" v-html="tab.text"
+                    :disabled="tabShow.inPrimaryTab(tab.name)" @click="player.currentPage = tab.id">
+	
+        	        		</button>
+     		       		</div>
+            			<div class="text-center">
+                			<button v-for="tab in secondaryTabSort()" :class="getSubTabClass(tab.parentTab,tab.name)" :style="tab.style"
+                    v-html="tab.text" :disabled="tabShow.inSecondaryTab(tab.parentTab,tab.name)"
+                    @click="player.currentPage = tab.id">
+
+					</button>
+	    			</div>
+				<div class="main-line"></div>
+        
+			</div>
+			<div v-if="player.currentPage==1">
+				<p>4维体积发生器({{format(player.volumegenerator_energies)}}/{{format(VGenergyMax())}})</p>
+				<div class="progress-parent">
+					<div class="progress-child" :style="{width: ((player.volumegenerator_energies/VGenergyMax())*100)+'%'}">
+					</div>
+				</div>
+				<p>4维体积发生器会消耗10%最大值的能量,每1能量产出{{format(VGpower())}} mm<sup>4</sup> 4维体积</p>
+				<button class="btn" @click="chargeVG">充能</button>
+			<div>
+				<h1>升级</h1>
+				<table style="margin: auto;">
+					<tr>
+						<td v-for="upg in upgradesList('mm4')" :key="upg.id"><button class="grid" @click="upgClick('mm4',upg.id)">{{upg.id}}</button></td>
+
+					</tr>
+				</table>
+				<div v-html="displayUpgDesc()"></div>	
+			</div>
+
+			</div>
+			<div v-if="player.currentPage == 2">
+				<button class="btn" @click="importText">导入</button>
+            <button class="btn" @click="exportCopy">导出到剪贴板</button>
+            <button class="btn" @click="exportFile">导出到文件</button>
+            <button class="btn" @click="formattedHardReset">硬重置</button>
+            <button class="btn" @click="importFile">从文件导入</button>
+        
+			</div>
+			<div v-if="player.currentPage == 3" class="text-center">
+            <div>
+                
+                <br>
+                作者:VeryrrDefine<br>
+                当前版本： 4.0.0 beta 2<br>
+                使用<a href="https://github.com/VeryrrDefine/PowiainaNum.js" target="_blank">PowiainaNum.js</a>处理大数字<br>
+                <div class="main-line"></div>
+                <p>支持所有序数增量吧吧友，点击下面玩吧友们制作的游戏</p>
+                <a href="https://seanxlx2011.github.io/" target="_blank">数据增量重置版</a>,
+                <a href="https://0i00000000a7.github.io/points-incremental-rewritten/" target="_blank">点数增量重置版</a>,
+                <a href="https://aster131072.github.io/incremental_evolution/" target="_blank">增量进化</a>,
+                <a href="https://dlsdl.github.io/wind_spirit_creation/" target="_blank">风灵作成</a>,<br>
+                <a href="https://qqqe308.github.io/The-Rhythm-Game-Tree/" target="_blank">音乐游戏树</a>,
+                <a href="https://a262537412640768744.github.io/homework-incremental/main.html" target="_blank">作业增量</a>,
+                <a href="https://goldenapple125.github.io/RBN/" target="_blank">大数之路</a>,
+                <a href="https://qqqe308.github.io/Anti-Anti-Softcap-Tree/111/" target="_blank">反-反软上限树</a>,
+                <br><br>
+                <p>你也可以玩其他的增量游戏！</p>
+                <a href="https://ivark.github.io/AntimatterDimensions" target="_blank">反物质维度</a>,<br>
+                <a href="https://seanxlx2011.github.io/" target="_blank"><del>无限维度重置版</del></a>,
+                <a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank">声望树</a>,
+                <a href="https://patcailmemer.github.io/Ordinal-Markup" target="_blank">序数增量</a>,
+                <a href="https://banana3864.github.io/Periodic-Elements-Incremental-Tree/" target="_blank">元素周期增量树</a><br><br>
+                <div class="main-line"></div>
+                <h1>---更新日志---</h1>
+		4.0.0 beta 1: Added volume fashengqi<br>
+		4.0.0 beta 2: Added a upgrade, offline time, import-exporting, deleted old saves
+
+            </div>
+        </div>
+       		<div v-if="player.currentPage == 5">
+            <p style="color: #aaa">你离线了{{formatTime.fromSeconds(player.offlinedTime)}}</p>
+            <p>拉动下面的进度条可以改变游戏速度，但需要消耗离线时间</p>
+            <p><button class="btn" @click="switchGameState">切换游戏状态<br>当前：{{player.isOffline ? "停止" : "未停止"}}</button>
+            </p>
+            <input type="range" min="0" max="7" step="0.001" style="width: 300px"
+                v-model.number="player.offlinePower"><br>
+
+        </div> 
+		</div>
+	</body>
+</html>
+<!--
+<?php } else {
+
+?> -->更新中，请耐心等待<!-- LOL LOL LOL --><!--<?php
+}
+?>-->
