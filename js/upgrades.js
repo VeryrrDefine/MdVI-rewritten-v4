@@ -170,7 +170,7 @@ var upgrades = {
 					return PowiainaNum.logBase(PowiainaNum.div(x,1e6),10)
 				},
 				effect(x){
-					return PowiainaNum.pow(x,4)
+					return PowiainaNum.pow(x.add(1),4)
 				},
 				effectDesc(x){
 					return `*${format(x)}`

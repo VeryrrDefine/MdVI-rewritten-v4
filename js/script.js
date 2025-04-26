@@ -15,7 +15,7 @@ function getInitialPlayerData() {
 		upgrades: {},
 		upgradeClicked: [null, 0],
 		energypow2: new PowiainaNum(0),
-		version: 4000003,
+		version: 4000004,
 	}
 	let upgradeGroupIds = Object.keys(upgrades);
 	for (let i = 0; i<upgradeGroupIds.length; i++) {
