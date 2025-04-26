@@ -18,6 +18,7 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
 		
 		<script src="./js/script.js" defer></script>
 		<script src="./js/formatTime.js" defer></script>
+		<script src="./js/newsticker.js" defer></script>
 		<link rel="stylesheet" href="style.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -25,6 +26,7 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
 	<body>
 		<div id="app">
 			<div class="header">
+				<newsticker></newsticker>
 				<p>你有 <span class="vol-dis">{{ format(player.volumes) }}</span> mm<sup>4</sup> 4维体积</p>
           			  <div class="text-center">
                 			<button v-for="tab in primaryTabSort()" :class="getTabClass(tab.name)" :style="tab.style" v-html="tab.text"
@@ -49,12 +51,19 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
 					</div>
 				</div>
 				<p>4维体积发生器会消耗10%最大值的能量,每1能量产出{{format(VGpower())}} mm<sup>4</sup> 4维体积</p>
-				<button class="btn" @click="chargeVG">充能</button>
+				<button class="btn" @click="chargeVG">充能 ({{ format(player.volumegenerator_cooldown)}})</button>
+				<div v-if="player.upgrades.mm4[4].gte(1)">
+					<p>充能^2</p>
+					<p>把所有能量充能为能量^2，增加4维体积生产(能量^2会逐渐衰减)</p>
+					<p>当前：{{format(player.energypow2)}} 能量^2 -&gt; *{{ format(energypow2("eff")) }} 到 4维体积生产 </p>
+					<button class="btn" @click="energypow2('ope_add')">充能^2</button>
+				</div>
+
 			<div>
 				<h1>升级</h1>
 				<table style="margin: auto;">
-					<tr>
-						<td v-for="upg in upgradesList('mm4')" :key="upg.id"><button class="grid" @click="upgClick('mm4',upg.id)">{{upg.id}}</button></td>
+					<tr v-for="row in upgradesList('mm4')">
+						<td v-for="upg in row" :key="upg.id"><button class="grid" @click="upgClick('mm4',upg.id)">{{upg.id}}</button></td>
 
 					</tr>
 				</table>
@@ -75,8 +84,9 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
                 
                 <br>
                 作者:VeryrrDefine<br>
-                当前版本： 4.0.0 beta 2<br>
+                当前版本： 4.0.0 beta 3<br>
                 使用<a href="https://github.com/VeryrrDefine/PowiainaNum.js" target="_blank">PowiainaNum.js</a>处理大数字<br>
+		<p>本人坚决反对Liuliu66686(溜溜溜达嘿)在PEITR群内的神权行为，因此我将删除PEIT游玩链接</p>
                 <div class="main-line"></div>
                 <p>支持所有序数增量吧吧友，点击下面玩吧友们制作的游戏</p>
                 <a href="https://seanxlx2011.github.io/" target="_blank">数据增量重置版</a>,
@@ -93,11 +103,12 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
                 <a href="https://seanxlx2011.github.io/" target="_blank"><del>无限维度重置版</del></a>,
                 <a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank">声望树</a>,
                 <a href="https://patcailmemer.github.io/Ordinal-Markup" target="_blank">序数增量</a>,
-                <a href="https://banana3864.github.io/Periodic-Elements-Incremental-Tree/" target="_blank">元素周期增量树</a><br><br>
+                <a href="http://galaxy120226.github.io/from-quark-to-universe" target="_blank">从夸克到宇宙</a><br><br>
                 <div class="main-line"></div>
                 <h1>---更新日志---</h1>
 		4.0.0 beta 1: Added volume fashengqi<br>
 		4.0.0 beta 2: Added a upgrade, offline time, import-exporting, deleted old saves
+		4.0.0 beta 3: Added 9 upgrades, charging^2
 
             </div>
         </div>
@@ -109,7 +120,11 @@ if (substr_count($ip, "127.0.0.1")+substr_count($ip,"192.168") >= 0) {?>
             <input type="range" min="0" max="7" step="0.001" style="width: 300px"
                 v-model.number="player.offlinePower"><br>
 
-        </div> 
+        </div>
+	<!--
+			<div id="tabs-mobile">
+				<div class="tab-mobile">I</div>
+			</div>-->
 		</div>
 	</body>
 </html>

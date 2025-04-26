@@ -69,7 +69,7 @@ class formatTime {
     toString(noMillSecond = false) {
       if (this.totalMilliseconds.lt(1)) return '0毫秒'
       let string = ''
-      if (this.years.neq(0)) string = string + (formatWhole(this.years) + '年')
+      if (this.years.neq(0)) string = string + (format(this.years) + '年')
       if (this.days.neq(0) && this.years.lt(4e14)) string = string + (format(this.days,0) + '天')
       if (this.hours.neq(0) && this.years.lt(4e12)) string = string + (format(this.hours,0) + '时')
       if (this.minutes.neq(0) && this.years.lt(5e10)) string = string + (format(this.minutes,0) + '分')
